@@ -198,9 +198,9 @@ function mainStuff(gc)
 	
 	if tries > 0 then
 		local tmpstr = "X values: " .. tostring(mass) .. " * " .. tostring(power) .. " * " .. tostring(math.ceil(1000*cosangle)/1000) .. " / " .. tostring(kx) .. " * ( exp(t*" .. tostring(kx) .. "/" .. tostring(mass) .. ") - 1 )"
-		gc:drawString(tmpstr,pww() - gc:getStringWidth(tmpstr),pwh()-26,"bottom")
+		--gc:drawString(tmpstr,pww() - gc:getStringWidth(tmpstr),pwh()-26,"bottom")
 	end
-	
+		
 	if timeattack then
 		gc:setColorRGB(255,0,0)
 		tmpstr = " Time Left : " .. timeleft .. "s."
