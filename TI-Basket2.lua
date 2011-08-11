@@ -475,7 +475,7 @@ function menu(gc)
 	xmax = pww()
 	ymax = pwh()
 	
-	gc:drawImage(theLogoImage,0,0)
+	gc:drawImage(theLogoImage,newXCoord(0.5*(pww()-image.width(theLogoImage))),0)
 	
 	--gc:setColorRGB(0,0,0)
 	--gc:fillRect(xmax/5, ymax/5,3*xmax/5,3*ymax/5)
@@ -484,18 +484,18 @@ function menu(gc)
 	--gc:fillRect(xmax/5+1, ymax/5+1,3*xmax/5-2,3*ymax/5-2)
 	
 	gc:setColorRGB(0,0,0)
-	gc:drawString("Choose  Mode : ",xmax*0.5-46,pwh()/2,"top")
+	--gc:drawString("Choose  Mode : ",xmax*0.5-46,pwh()/2-10,"top")
 		
-	makeButton(gc,"1.  Normal",xmax*0.5,ymax/2-26+48)
-	makeButton(gc,"2.  Hardcore",xmax*0.5,ymax/2+48)
-	makeButton(gc,"3.  Time-Attack",xmax*0.5,ymax/2+26+48)
+	makeButton(gc,"1.  Normal",xmax*0.5,ymax/2-26+40)
+	makeButton(gc,"2.  Hardcore",xmax*0.5,ymax/2+40)
+	makeButton(gc,"3.  Time-Attack",xmax*0.5,ymax/2+26+40)
 	
 	gc:setColorRGB(100,100,100)
 	tmpstr = "Arrows to adjust angle/power -  Enter to Shoot"
-	gc:drawString(tmpstr,0.5*(pww()-gc:getStringWidth(tmpstr)),10,"bottom")
+	gc:drawString(tmpstr,0.5*(pww()-gc:getStringWidth(tmpstr)),196,"bottom")
 
 	tmpstr2 = "Esc to go to this Menu"
-	gc:drawString(tmpstr2,0.5*(pww()-gc:getStringWidth(tmpstr2)),25,"bottom")
+	gc:drawString(tmpstr2,0.5*(pww()-gc:getStringWidth(tmpstr2)),210,"bottom")
 	
 	refresh()
 end
