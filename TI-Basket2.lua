@@ -65,7 +65,7 @@ function drawCircle(x, y, diameter)
 end
 
 function drawCenteredString(str)
-	myGC:drawString(str, (pww() - platform.gc():getStringWidth(str)) / 2, pwh() / 2, "middle")
+	myGC:drawString(str, (pww() - myGC:getStringWidth(str))*0.5, pwh()*0.5, "middle")
 end
 
 function drawSquare(x,y,l)
@@ -117,27 +117,26 @@ end
 -- End BetterLuaAPI
 
 function newXCoord(oldCoord)
-	return platform.isDeviceModeRendering() and oldCoord*pwwRatio or oldCoord
+	return (not platform.isDeviceModeRendering()) and oldCoord*pwwRatio or oldCoord
 end
 
 function newYCoord(oldCoord)
-	return platform.isDeviceModeRendering() and oldCoord*pwhRatio or oldCoord
+	return (not platform.isDeviceModeRendering()) and oldCoord*pwhRatio or oldCoord
 end
 
 function on.paint(gc)
 	if not myGC then myGC = gc end
 	gc:setColorRGB(0,0,0)
 	-- gc:drawString("memory usage=" .. tostring(collectgarbage("count")*1024) .. " bytes", 10, 10, "top")
-	if isRunning then gc:drawString(" Ti-Basket - Adriweb 2011",0,0,"top") end
 		
 	if (needMenu) then
 		menu(gc)
 	else
-
+		gc:drawString(" Ti-Basket - Adriweb 2011",0,0,"top")
 		drawBackground(gc) -- floor color etc.
 		
 		gc:drawImage(theguyImage,0,pwh()-image.height(theguyImage))
-		if isRunning == false then
+		if not isRunning then
 			gc:drawImage(theballImage,14,pwh()-image.height(theguyImage)-2)
 		end
 		gc:setColorRGB(0,0,255)
@@ -172,7 +171,7 @@ end
 
 function drawBackground(gc)
 	gc:setColorRGB(255,150,80)
-	gc:fillRect(0,165,pww(),165)
+	gc:fillRect(0,newYCoord(165),pww(),newYCoord(165))
 	gc:setColorRGB(255,255,255)
 	gc:drawArc(pww()*0.5-60,pwh()-30, 120,80,0,180)
 end
@@ -185,9 +184,9 @@ function goWin(gc)
 	xmax = pww()
 	if not timeattack then
 		gc:setColorRGB(150,150,150)
-		drawRoundRect(xmax*0.5,109,101,23,5)
+		drawRoundRect(xmax*0.5,newYCoord(108),101,23,5)
 		gc:setColorRGB(50,50,50)
-		fillRoundRect(xmax*0.5,109,100,21,5)
+		fillRoundRect(xmax*0.5,newYCoord(108),100,21,5)
 		gc:setColorRGB(255,255,255)
 		drawCenteredString("You Win !")
 	else
@@ -290,12 +289,12 @@ end
 
 function moveBasket()
 	hauteur = hauteur - 1 + 2*test(goingup)
-	if (hauteur < 45) then
-		hauteur = 45
+	if (hauteur < newYCoord(45)) then
+		hauteur = newYCoord(45)
 		goingup = not(goingup)
 	end
-	if (hauteur > 135) then
-		hauteur = 135
+	if (hauteur > newYCoord(135)) then
+		hauteur = newYCoord(135)
 		goingup = not(goingup)
 	end
 	refresh()
@@ -310,7 +309,8 @@ function on.timer()
 	end
 	
 	if timeattack then
-		timeleft = 60-math.floor((math.abs(timeNow()) - math.abs(startTime))*0.001)
+		local addTime = math.floor((math.abs(timeNow()) - math.abs(startTime))*0.001)
+		timeleft = 60-addTime+2*addTime*test(not platform.isDeviceModeRendering())
 		if math.abs(math.floor(timeleft)) == 0 then gameover = true end
 		refresh()
 	end
@@ -422,13 +422,17 @@ end
 function on.resize()
 	pwwRatio = pww()/318
 	pwhRatio = pwh()/212
+	-- do not change
+	
+	posxmin = newXCoord(285)
+	posxmax = newXCoord(313)
+	
+	if mustGo then needMenu = true refresh() end
 end
 
 function on.create()
 	-- need todo more stuff here
 	hauteur = 70
-	posxmin = 285
-	posxmax = 313
 	on.resize()
 end
 
@@ -445,8 +449,8 @@ function go(power,angle)
 	tablex = {0}
 	tabley = {0}
 	local t,maximum
-	tmax = mass/kx*math.log(1+kx*312/(mass*powcosangle))
-	maximum = 80
+	tmax = mass/kx*math.log(1+kx*newXCoord(312)/(mass*powcosangle))
+	maximum = 80+80*test(not platform.isDeviceModeRendering()) -- maximum points
 	
 	for i=1,maximum do
 		t = i*tmax/maximum
@@ -475,7 +479,7 @@ function menu(gc)
 	xmax = pww()
 	ymax = pwh()
 	
-	gc:drawImage(theLogoImage,newXCoord(0.5*(pww()-image.width(theLogoImage))),0)
+	gc:drawImage(theLogoImage,0.5*(xmax-image.width(theLogoImage)),0)
 	
 	--gc:setColorRGB(0,0,0)
 	--gc:fillRect(xmax/5, ymax/5,3*xmax/5,3*ymax/5)
@@ -492,10 +496,10 @@ function menu(gc)
 	
 	gc:setColorRGB(100,100,100)
 	tmpstr = "Arrows to adjust angle/power -  Enter to Shoot"
-	gc:drawString(tmpstr,0.5*(pww()-gc:getStringWidth(tmpstr)),196,"bottom")
+	gc:drawString(tmpstr,0.5*(xmax-gc:getStringWidth(tmpstr)),196,"bottom")
 
 	tmpstr2 = "Esc to go to this Menu"
-	gc:drawString(tmpstr2,0.5*(pww()-gc:getStringWidth(tmpstr2)),210,"bottom")
+	gc:drawString(tmpstr2,0.5*(xmax-gc:getStringWidth(tmpstr2)),210,"bottom")
 	
 	refresh()
 end
