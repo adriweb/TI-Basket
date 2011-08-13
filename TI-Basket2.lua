@@ -420,6 +420,8 @@ function on.escapeKey()
 end
 
 function on.resize()
+    --platform.window:setPreferredSize(0,0)
+ 
 	pwwRatio = pww()/318
 	pwhRatio = pwh()/212
 	-- do not change
@@ -459,11 +461,38 @@ function go(power,angle)
 
 		if (tabley[i] < 0 or tablex[i] ~= tablex[i]) then break end  --  (x ~= x) is a test for NaN
 	end
-		
+		                         
 	var.store("tablex",tablex)
 	var.store("tabley",tabley)
 	
+	var.store("zoomxmin",tablemin(tablex))
+	var.store("zoomxmax",tablemax(tablex))
+	var.store("zoomymin",tablemin(tabley))
+	var.store("zoomymax",tablemax(tabley))
+	
+	math.eval("QuartReg tablex,tabley,1: CopyVar stat.RegEqn,f1")
+	
 	refresh()
+end
+
+function tablemax(tab)
+   local m = 0
+   for _, v in pairs(tab) do
+   if v > m then 
+      m = v
+   end
+   end
+   return m
+end 
+
+function tablemin(tab)
+   local m = tablemax(tab)
+   for _, v in pairs(tab) do
+   if v < m then 
+      m = v
+   end
+   end
+   return m
 end
 
 function menu(gc)
