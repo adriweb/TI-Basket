@@ -420,6 +420,7 @@ function on.escapeKey()
 end
 
 function on.resize()
+  
     --platform.window:setPreferredSize(0,0)
  
 	pwwRatio = pww()/318
