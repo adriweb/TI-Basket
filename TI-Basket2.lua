@@ -7,7 +7,7 @@
 -- Version 2.1 --
 -----------------
 -- Thanks go Jimbauwens, Levak, ldebroux, John Powers, Todd Wostrel
--- Ti-Bank, Omnimaga, Cemetech and everybody else I forgot :P
+-- Ti-Planet, Omnimaga, Cemetech and everybody else I forgot :P
 -----------------
 
 -- TODO :
@@ -15,7 +15,11 @@
 -- Improve to support the Computer view in the software
 
 -- 'Globals'
-
+            
+device = { api, hasColor, isCalc, theType, lang }
+device.api = platform.apilevel
+device.hasColor = platform.isColorDisplay()
+device.lang = locale.name()
 power = 50
 pi = 3.1416
 angle = pi/4
@@ -421,7 +425,10 @@ end
 
 function on.resize()
   
-    --platform.window:setPreferredSize(0,0)
+    if device.api == "1.1" then platform.window:setPreferredSize(0,0) end
+    
+    device.isCalc = (platform.window:width() < 320)
+    device.theType = platform.isDeviceModeRendering() and "handheld" or "software"
  
 	pwwRatio = pww()/318
 	pwhRatio = pwh()/212
