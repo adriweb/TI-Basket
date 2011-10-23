@@ -1,15 +1,7 @@
------------------
---- TI-Basket ---
----- Adriweb ----
------------------
--- Contact : adrienbertrand@msn.com
------------------
--- Version 2.1 --
------------------
-
-
-
-
+ -- Equation Display
+ -- Adriweb 2011
+  
+ 
  function on.paint(gc)
      gc:setColorRGB(0,0,0)
      gc:setFont("serif","r",9)
@@ -25,22 +17,22 @@
  
  function on.create()
     tab = {}
-    local a = check(roundstr(var.recall("stat.a"),9),"x" .. string.uchar(0x2074) .. " + ")
-    local b = check(roundstr(var.recall("stat.b"),9),"x" .. string.uchar(0x00B3) .. " + ")
-    local c = check(roundstr(var.recall("stat.c"),9),"x" .. string.uchar(0x00B2) .. " + ")
-    local d = check(roundstr(var.recall("stat.d"),9),"x + ")
-    local e = check(roundstr(var.recall("stat.e"),9),"")
-    regeqn = a .. b .. c .. d .. e
+    local a = check(roundstr(var.recall("stat.a"),5),"x" .. string.uchar(0x2074) .. " + ")
+    local b = check(roundstr(var.recall("stat.b"),5),"x" .. string.uchar(0x00B3) .. " + ")
+    local c = check(roundstr(var.recall("stat.c"),5),"x" .. string.uchar(0x00B2) .. " + ")
+    local d = check(roundstr(var.recall("stat.d"),5),"x + ")
+    local e = check(roundstr(var.recall("stat.e"),5),"")
+    regeqn = c .. d .. e
     var.monitor("stat.a")
 end
  
  function on.varChange(list)
-    local a = check(roundstr(var.recall("stat.a"),9),"x" .. string.uchar(0x2074) .. " + ")
-    local b = check(roundstr(var.recall("stat.b"),9),"x" .. string.uchar(0x00B3) .. " + ")
-    local c = check(roundstr(var.recall("stat.c"),9),"x" .. string.uchar(0x00B2) .. " + ")
-    local d = check(roundstr(var.recall("stat.d"),9),"x + ")
-    local e = check(roundstr(var.recall("stat.e"),9),"")
-    regeqn = a .. b .. c .. d .. e
+    local a = check(roundstr(var.recall("stat.a"),5),"x" .. string.uchar(0x2074) .. " + ")
+    local b = check(roundstr(var.recall("stat.b"),5),"x" .. string.uchar(0x00B3) .. " + ")
+    local c = check(roundstr(var.recall("stat.c"),5),"x" .. string.uchar(0x00B2) .. " + ")
+    local d = check(roundstr(var.recall("stat.d"),5),"x + ")
+    local e = check(roundstr(var.recall("stat.e"),5),"")
+    regeqn = c .. d .. e
     return 0
  end    
  
