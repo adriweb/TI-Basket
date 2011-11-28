@@ -15,9 +15,10 @@
 -- Improve to support the Computer view in the software
 
 -- 'Globals'
+
+platform.apilevel = "1.0"
             
 device = { api, hasColor, isCalc, theType, lang }
-device.api = platform.apilevel
 device.hasColor = platform.isColorDisplay()
 device.lang = locale.name()
 power = 50
@@ -162,7 +163,6 @@ function on.paint(gc)
 			fillRoundRect(xmax*0.5,109,100,21,5)
 			gc:setColorRGB(255,255,255)
 			drawCenteredString("Time's up !")
-			timer.stop()
 			refresh()
 		end
 		
@@ -404,17 +404,17 @@ end
 end
 
 function on.enterKey()
-if not(gameover) then
-	if (win == false) then
-	if (isRunning == false) then
-		win = false
-		mustGo = true
-		go(power,angle)
-	end
-	else
-		if (score > 0 and needScore) then score = score - 1 end -- dirty bug fix
-	end
-end
+    if not(gameover) then
+        if (win == false) then
+        if (isRunning == false) then
+            win = false
+            mustGo = true
+            go(power,angle)
+        end
+        else
+            if (score > 0 and needScore) then score = score - 1 end -- dirty bug fix
+        end
+    end
 end
 
 function on.escapeKey()
@@ -425,9 +425,6 @@ function on.escapeKey()
 end
 
 function on.resize()
-  
-    if device.api == "1.1" then platform.window:setPreferredSize(0,0) end
-    
     device.isCalc = (platform.window:width() < 320)
     device.theType = platform.isDeviceModeRendering() and "handheld" or "software"
  

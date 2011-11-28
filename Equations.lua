@@ -1,3 +1,4 @@
+platform.apilevel = '1.0' 
  -- Equation Display
  -- Adriweb 2011
   
@@ -5,14 +6,15 @@
  function on.paint(gc)
      gc:setColorRGB(0,0,0)
      gc:setFont("serif","r",9)
-     tab = wrap(gc,regeqn)    
-     local tmpstr = "Equ :"
-     for i,v in pairs(tab) do
-        gc:drawString(tmpstr .. v,0,12*(i-1),"top")
-        tmpstr = "  "
-     end 
-     tab = {} 
-     --gc:drawString("Equ2 : " .. regeqn,0,40,"top")
+     if type(var.recall("stat.a")) == "number" then    -- existence check
+         tab = wrap(gc,regeqn)    
+         local tmpstr = "Equ :  "
+         for i,v in pairs(tab) do
+            gc:drawString(tmpstr .. v,0,12*(i-1),"top")
+            tmpstr = "  "
+         end 
+         tab = {} 
+     end
  end                                   
  
  function on.create()
@@ -22,7 +24,7 @@
     local c = check(roundstr(var.recall("stat.c"),5),"x" .. string.uchar(0x00B2) .. " + ")
     local d = check(roundstr(var.recall("stat.d"),5),"x + ")
     local e = check(roundstr(var.recall("stat.e"),5),"")
-    regeqn = c .. d .. e
+    regeqn = a .. b .. c .. d .. e
     var.monitor("stat.a")
 end
  
@@ -32,7 +34,7 @@ end
     local c = check(roundstr(var.recall("stat.c"),5),"x" .. string.uchar(0x00B2) .. " + ")
     local d = check(roundstr(var.recall("stat.d"),5),"x + ")
     local e = check(roundstr(var.recall("stat.e"),5),"")
-    regeqn = c .. d .. e
+    regeqn = a .. b .. c .. d .. e
     return 0
  end    
  
@@ -60,14 +62,10 @@ function wrap(gc,str)
        tab = {}
        local newlen = length2
        while gc:getStringWidth(str:sub(1,newlen)) > width do
-          newlen = newlen - 3
+          newlen = newlen - 9
        end
        table.insert(tab,str:sub(1,newlen))
        table.insert(tab,str:sub(newlen))
    end
    return tab 
 end
-    
-    
-    
-    
